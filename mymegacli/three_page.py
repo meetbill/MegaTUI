@@ -28,8 +28,14 @@ def three1_1funtion(screen):
     raid status
     
     """
+    try:
+        adapters = cli.adapters()[0]    
+    except :
+        waring = Snack_output(screen, "waring", 35 )
+        waring.text("not found raid card")
+        waring.run(43,3)
+        return 0
     m = Snack_output(screen, "status_raid", 35 )
-    adapters = cli.adapters()[0]    
     m.text("raid卡名称:   %s"%adapters["product_name"])
     m.text("物理磁盘数量: %s"%adapters["disks"])
     m.text("高危磁盘:     %s"%adapters["critical_disks"])
@@ -44,6 +50,14 @@ def three1_2funtion(screen):
     """
     物理磁盘信息
     """
+    try:
+        adapters = cli.adapters()[0]    
+    except :
+        waring = Snack_output(screen, "waring", 35 )
+        waring.text("not found raid card")
+        waring.run(43,3)
+        return 0
+
     m = Snack_output(screen, "status_raid", 35 )
     physicaldrives = cli.physicaldrives()  
     for drive in physicaldrives:
