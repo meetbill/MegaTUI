@@ -60,8 +60,28 @@ def three1_2funtion(screen):
 
     m = Snack_output(screen, "status_raid", 35 )
     physicaldrives = cli.physicaldrives()  
+    m.text("%s%s%s"%(format("slot_number","^10"),format("raw_size","^15"),format("firmware_state","^20")))
     for drive in physicaldrives:
-        m.text("%s,%s,%s"%(drive["slot_number"],drive["raw_size"],drive["firmware_state"]))
+        m.text("%s%s%s"%(format(drive["slot_number"],"^10"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
+    m.run(43,3)
+
+def three1_3funtion(screen):
+    """
+    逻辑磁盘信息
+    """
+    try:
+        adapters = cli.adapters()[0]    
+    except :
+        waring = Snack_output(screen, "waring", 35 )
+        waring.text("not found raid card")
+        waring.run(43,3)
+        return 0
+
+    m = Snack_output(screen, "status_vd", 65 )
+    logicaldrives = cli.logicaldrives()  
+    m.text("%s%s%s%s%s"%(format("vd","^4"),format("num","^6"),format("size","^12"),format("state","^8"),format("raid_level","^8")))
+    for vd in logicaldrives:
+        m.text("%s%s%s%s%s"%(format(vd["id"],"^4"),format(vd["number_of_drives"],"^6"),format(vd["size"],"^12"),format(vd["state"],"^8"),format(vd["raid_level"],"^8")))
     m.run(43,3)
 
 def example(screen):

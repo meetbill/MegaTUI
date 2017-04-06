@@ -20,7 +20,7 @@ config_secondary = [{
         'name': 'window1',
         'items':  [("raid 状态","three1_1funtion"),
                    ("物理磁盘信息","three1_2funtion"),
-                   ("二级目录1_3","three1_3funtion"),
+                   ("虚拟磁盘信息","three1_3funtion"),
         ],
     },
     {

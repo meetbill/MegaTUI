@@ -4,6 +4,7 @@ Python library for MegaCli
 
 This is a simple Python library that wraps around MegaCli to provide an OO interface.
 """
+__verion__ = "1.0.1"
 
 import os
 import re
@@ -110,24 +111,32 @@ class MegaCLI:
         return k, int(m.group(1))
 
     # deal with sizes
+    #m = re.match('^(\d+(?:\.\d+)?)\s*(b|kb|mb|gb|tb|pb)', value)
+    #if m:
+    #  size = float(m.group(1))
+    #  unit = m.group(2)
+    #  multiplier = 1
+    #  if unit == 'kb':
+    #    multiplier = 1024
+    #  elif unit == 'mb':
+    #    multiplier = 1024 * 1024
+    #  elif unit == 'gb':
+    #    multiplier = 1024 * 1024 * 1024
+    #  elif unit == 'tb':
+    #    multiplier = 1024 * 1024 * 1024 * 1024
+    #  elif unit == 'pb':
+    #    multiplier = 1024 * 1024 * 1024 * 1024 * 1024
+    #  return k, (size * multiplier)
+
+    # deal with sizes
     m = re.match('^(\d+(?:\.\d+)?)\s*(b|kb|mb|gb|tb|pb)', value)
     if m:
-      size = float(m.group(1))
+      size = m.group(1)
       unit = m.group(2)
 
-      multiplier = 1
-      if unit == 'kb':
-        multiplier = 1024
-      elif unit == 'mb':
-        multiplier = 1024 * 1024
-      elif unit == 'gb':
-        multiplier = 1024 * 1024 * 1024
-      elif unit == 'tb':
-        multiplier = 1024 * 1024 * 1024 * 1024
-      elif unit == 'pb':
-        multiplier = 1024 * 1024 * 1024 * 1024 * 1024
+      size_all = size + unit
 
-      return k, (size * multiplier)
+      return k, size_all
 
     # deal with times
     m = re.match('^(\d+)\s*(s|sec|secs|seconds|m|min|mins|minutes|h|hour|hours|d|day|days)$', value)
