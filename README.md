@@ -2,14 +2,15 @@
 megacli tui
 
 <!-- vim-markdown-toc GFM -->
-* [wiki](#wiki)
+* [wiki 及相关手册](#wiki-及相关手册)
 * [相关项目](#相关项目)
 * [版本发布](#版本发布)
 
 <!-- vim-markdown-toc -->
-## wiki
+## wiki 及相关手册
 
-[wiki](https://github.com/BillWang139967/megacli_tui/wiki)
+> * [wiki](https://github.com/BillWang139967/megacli_tui/wiki)
+> * [megacli 手册](./doc/megacli.md)
 
 ## 相关项目
 
