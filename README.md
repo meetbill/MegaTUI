@@ -1,16 +1,11 @@
 # megacli_tui
-megacli tui
+megacli 终端界面管理工具
 
-<!-- vim-markdown-toc GFM -->
-* [wiki 及相关手册](#wiki-及相关手册)
-* [相关项目](#相关项目)
-* [版本发布](#版本发布)
+![Screenshot](images/lvinfo.png)
 
-<!-- vim-markdown-toc -->
-## wiki 及相关手册
+## 使用手册
 
-> * [wiki](https://github.com/BillWang139967/megacli_tui/wiki)
-> * [megacli 手册](./doc/megacli.md)
+> * [使用手册](https://github.com/BillWang139967/megacli_tui/wiki)
 
 ## 相关项目
 
@@ -19,5 +14,8 @@ megacli tui
 
 ## 版本发布
 
+版本号根据 `three_page.py` 程序而定
+
+* v1.0.3，2017-10-11，新增：修复无创建 raid 组时查询虚拟磁盘失败问题。
 * v1.0.2，2017-04-06，新增：虚拟磁盘查询。
 * v1.0.1，2017-03-22，新增：发布初始版本。

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #encoding=utf-8
 
-import traceback, os, re, time, sys, getopt
+import traceback, os, sys, getopt
 root_path = os.path.split(os.path.realpath(__file__))[0]
 sys.path.insert(0, os.path.join(root_path, 'mylib'))
 from snack import * #导入图形界面
@@ -10,7 +10,7 @@ from config import config_first
 from config import config_secondary
 import inspect
 import three_page
-__version__ = "1.0.2"
+__version__ = "1.2.1"
 
 def usage():
   print "<使用方法>"
@@ -23,8 +23,6 @@ def warwindows(screen, title, text, help = None):
     war.add(Label(""),0,2)
     war.add(btn, 0, 3)
     war.runOnce(43,8)
-
-
 class Menu_tool:
     def __init__(self):
 
@@ -100,10 +98,8 @@ class Menu_tool:
 
     # 第二层menu
     def secondary_menu(self):
-        re = []
         li = Listbox(height = 15, width = 14, returnExit = 1, showCursor = 0)
         n = 0
-        n1 = 1
         bb = CompactButton('返回')
         secondary_window = config_secondary[self.main_location - 1]
         items_n = 1
@@ -144,6 +140,9 @@ try:
     
     if len(config_first["items"]) != len(config_secondary):
         print "一级目录个数与二级窗口个数不对应"
+        sys.exit()
+    if  os.getenv('STY'):
+        print "not support screen"
         sys.exit()
     menu = Menu_tool()
     menu.main()
