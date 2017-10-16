@@ -6,7 +6,7 @@
 
 # File Name: three_page.py
 # Description:
-# version:1.0.3
+# version:1.0.4
 """
 import os, sys
 reload(sys)
@@ -81,7 +81,7 @@ def three1_3funtion(screen):
     logicaldrives = cli.logicaldrives()  
     m.text("%s%s%s%s%s"%(format("vd","^4"),format("num","^6"),format("size","^12"),format("state","^8"),format("raid_level","^8")))
     for vd in logicaldrives:
-        if id in vd.keys():
+        if "id" in vd.keys():
             m.text("%s%s%s%s%s"%(format(vd["id"],"^4"),format(vd["number_of_drives"],"^6"),format(vd["size"],"^12"),format(vd["state"],"^8"),format(vd["raid_level"],"^8")))
     m.run(43,3)
 
