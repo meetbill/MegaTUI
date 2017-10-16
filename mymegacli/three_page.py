@@ -6,7 +6,7 @@
 
 # File Name: three_page.py
 # Description:
-# version:1.0.4
+# version:1.0.5
 """
 import os, sys
 reload(sys)
@@ -60,9 +60,9 @@ def three1_2funtion(screen):
 
     m = Snack_output(screen, "status_raid", 35 )
     physicaldrives = cli.physicaldrives()  
-    m.text("%s%s%s"%(format("slot_number","^10"),format("raw_size","^15"),format("firmware_state","^20")))
+    m.text("%s%s%s%s"%(format("ED","^6"),format("slot_number","^10"),format("raw_size","^15"),format("firmware_state","^20")))
     for drive in physicaldrives:
-        m.text("%s%s%s"%(format(drive["slot_number"],"^10"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
+        m.text("%s%s%s%s"%(format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^10"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
     m.run(43,3)
 
 def three1_3funtion(screen):
