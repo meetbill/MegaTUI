@@ -58,6 +58,8 @@ function check_command()
     chmod +x /usr/bin/megatui
     ProcessBar
 }
+rpm -ivh ./tools/MegaCli-8.07.14-1.noarch.rpm
+bash ./tools/install_lib.sh
 check_dir
 check_command
 echo
