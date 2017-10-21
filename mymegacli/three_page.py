@@ -6,7 +6,7 @@
 
 # File Name: three_page.py
 # Description:
-# version:1.0.5
+# version:1.0.6
 """
 import os, sys
 reload(sys)
@@ -17,6 +17,7 @@ from snack_lib import Mask
 from snack_lib import conformwindows
 from snack_lib import Snack_output
 from BLog import Log
+from snack import ListboxChoiceWindow
 from megalib import MegaCLI
 cli = MegaCLI()
 debug=False
@@ -28,31 +29,51 @@ def three1_1funtion(screen):
     raid status
     
     """
-    try:
-        adapters = cli.adapters()[0]    
-    except :
+    adapters = cli.adapters()
+    adapter_id = 0
+    # 如果没有获取的 raid 卡，则直接返回提醒
+    if not len(adapters):
         waring = Snack_output(screen, "waring", 35 )
         waring.text("not found raid card")
         waring.run(43,3)
         return 0
+    # 如果获取到 raid 卡有两个及以上，则弹出选择框
+    elif len(adapters) > 1:
+        item_list = []
+        item = 0
+        for adapter in adapters:
+            item_list.append("raid "+str(item))
+            item = item + 1
+        action, selection = ListboxChoiceWindow(screen, 'Title 2',                                                                                                       
+                                   'Choose one item from list below:',
+                                   item_list, default=0,width = 35,
+                                   help="Help for a listbox")
+        if action in (None,"ok"):
+            if selection == 0:
+                adapter_id = 0
+            else:
+                adapter_id = 1
+        else:
+            return
+    adapter_info = adapters[adapter_id]    
     m = Snack_output(screen, "status_raid", 35 )
-    m.text("raid卡名称:   %s"%adapters["product_name"])
-    m.text("物理磁盘数量: %s"%adapters["disks"])
-    m.text("高危磁盘:     %s"%adapters["critical_disks"])
-    m.text("失效磁盘:     %s"%adapters["failed_disks"])
-    m.text("已创建磁盘组: %s"%adapters["virtual_drives"])
-    m.text("下线磁盘组:   %s"%adapters["offline"])
-    m.text("降级磁盘组:   %s"%adapters["degraded"])
-    m.text("开启JBOD模式: %s"%adapters["enable_jbod"])
+    m.text("raid卡名称:   %s"%adapter_info["product_name"])
+    m.text("物理磁盘数量: %s"%adapter_info["disks"])
+    m.text("高危磁盘:     %s"%adapter_info["critical_disks"])
+    m.text("失效磁盘:     %s"%adapter_info["failed_disks"])
+    m.text("已创建磁盘组: %s"%adapter_info["virtual_drives"])
+    m.text("下线磁盘组:   %s"%adapter_info["offline"])
+    m.text("降级磁盘组:   %s"%adapter_info["degraded"])
+    m.text("开启JBOD模式: %s"%adapter_info["enable_jbod"])
     m.run(43,3)
 
 def three1_2funtion(screen):
     """
     物理磁盘信息
     """
-    try:
-        adapters = cli.adapters()[0]    
-    except :
+    adapters = cli.adapters()
+    # 如果没有获取的 raid 卡，则直接返回提醒
+    if not len(adapters):
         waring = Snack_output(screen, "waring", 35 )
         waring.text("not found raid card")
         waring.run(43,3)
@@ -60,18 +81,19 @@ def three1_2funtion(screen):
 
     m = Snack_output(screen, "status_raid", 35 )
     physicaldrives = cli.physicaldrives()  
-    m.text("%s%s%s%s"%(format("ED","^6"),format("slot_number","^10"),format("raw_size","^15"),format("firmware_state","^20")))
+    m.text("%s%s%s%s%s"%(format("raidID","^6"),format("ED","^6"),format("slotID","^6"),format("raw_size","^15"),format("firmware_state","^20")))
     for drive in physicaldrives:
-        m.text("%s%s%s%s"%(format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^10"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
+        if "enclosure_id" in drive.keys():
+            m.text("%s%s%s%s%s"%(format(drive["adapter_id"],"^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
     m.run(43,3)
 
 def three1_3funtion(screen):
     """
     逻辑磁盘信息
     """
-    try:
-        adapters = cli.adapters()[0]    
-    except :
+    adapters = cli.adapters()
+    # 如果没有获取的 raid 卡，则直接返回提醒
+    if not len(adapters):
         waring = Snack_output(screen, "waring", 35 )
         waring.text("not found raid card")
         waring.run(43,3)
@@ -79,10 +101,10 @@ def three1_3funtion(screen):
 
     m = Snack_output(screen, "status_vd", 65 )
     logicaldrives = cli.logicaldrives()  
-    m.text("%s%s%s%s%s"%(format("vd","^4"),format("num","^6"),format("size","^12"),format("state","^8"),format("raid_level","^8")))
+    m.text("%s%s%s%s%s%s"%(format("raidID","^6"),format("vd","^4"),format("num","^6"),format("size","^12"),format("state","^8"),format("raid_level","^8")))
     for vd in logicaldrives:
         if "id" in vd.keys():
-            m.text("%s%s%s%s%s"%(format(vd["id"],"^4"),format(vd["number_of_drives"],"^6"),format(vd["size"],"^12"),format(vd["state"],"^8"),format(vd["raid_level"],"^8")))
+            m.text("%s%s%s%s%s%s"%(format(vd["adapter_id"],"^6"),format(vd["id"],"^4"),format(vd["number_of_drives"],"^6"),format(vd["size"],"^12"),format(vd["state"],"^8"),format(vd["raid_level"],"^8")))
     m.run(43,3)
 
 def example(screen):
