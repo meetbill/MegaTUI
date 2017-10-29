@@ -3,10 +3,11 @@
 """
 # Author: meetbill
 # Created Time : 2017-03-16 21:36:04
+# update Time  : 2017-10-16 23:36:54
 
 # File Name: three_page.py
 # Description:
-# version:1.0.6
+# version:1.0.7
 """
 import os, sys
 reload(sys)
@@ -18,6 +19,7 @@ from snack_lib import conformwindows
 from snack_lib import Snack_output
 from BLog import Log
 from snack import ListboxChoiceWindow
+import re
 from megalib import MegaCLI
 cli = MegaCLI()
 debug=False
@@ -81,10 +83,13 @@ def three1_2funtion(screen):
 
     m = Snack_output(screen, "status_raid", 35 )
     physicaldrives = cli.physicaldrives()  
-    m.text("%s%s%s%s%s"%(format("raidID","^6"),format("ED","^6"),format("slotID","^6"),format("raw_size","^15"),format("firmware_state","^20")))
+    m.text("%s%s%s%s%s%s"%(format("raidID","^6"),format("VD","^6"),format("ED","^6"),format("slotID","^6"),format("raw_size","^15"),format("firmware_state","^20")))
     for drive in physicaldrives:
         if "enclosure_id" in drive.keys():
-            m.text("%s%s%s%s%s"%(format(drive["adapter_id"],"^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
+            if "drive_position" in drive.keys():
+                m.text("%s%s%s%s%s%s"%(format(drive["adapter_id"],"^6"),format(re.split(',|:',drive["drive_position"])[1],"^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
+            else:
+                m.text("%s%s%s%s%s%s"%(format(drive["adapter_id"],"^6"),format("-","^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
     m.run(43,3)
 
 def three1_3funtion(screen):
