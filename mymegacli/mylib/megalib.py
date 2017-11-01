@@ -4,7 +4,7 @@ Python library for MegaCli
 
 This is a simple Python library that wraps around MegaCli to provide an OO interface.
 """
-__verion__ = "1.0.1"
+__verion__ = "1.0.2"
 
 import os
 import re
@@ -653,3 +653,27 @@ class MegaCLI:
       raise ValueError("Logical drive's adapter ID must be type int")
 
     return self.execute("-LDInit {0}".format(' '.join(cmd)))
+
+  def get_rebuild_process(self,drive,adapter):
+    """
+    return rebuild process info
+
+    :param drive: specifies the logical drive to stop initializion
+    :type drive: string
+    :param adapter: specifies the drive's controller
+    :type adapter: int
+    :return: MegaCLI command output
+    :rtype: string
+    """
+    cmd = []
+
+    cmd.append("-showprog")
+
+    cmd.append("-PhysDrv [{0}]".format(drive))
+
+    if isinstance(adapter, int):
+      cmd.append("-a{0}".format(adapter))
+    else:
+      raise ValueError("the drive is not in rebuild process")
+    rebuild_info = self.execute("-pdrbld {0}".format(' '.join(cmd)))
+    return rebuild_info[1]
