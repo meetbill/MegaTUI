@@ -21,6 +21,7 @@ config_secondary = [{
         'items':  [("raid 状态","three1_1funtion"),
                    ("物理磁盘信息","three1_2funtion"),
                    ("虚拟磁盘信息","three1_3funtion"),
+                   ("rebuild 信息","rebuild_device_status"),
         ],
     },
     {

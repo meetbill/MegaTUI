@@ -7,7 +7,7 @@
 
 # File Name: three_page.py
 # Description:
-# version:1.0.7
+# version:1.0.8
 """
 import os, sys
 reload(sys)
@@ -83,13 +83,13 @@ def three1_2funtion(screen):
 
     m = Snack_output(screen, "status_raid", 35 )
     physicaldrives = cli.physicaldrives()  
-    m.text("%s%s%s%s%s%s"%(format("raidID","^6"),format("VD","^6"),format("ED","^6"),format("slotID","^6"),format("raw_size","^15"),format("firmware_state","^20")))
+    m.text("%s%s%s%s%s%s%s"%(format("device_ID","^10"),format("raidID","^6"),format("VD","^6"),format("ED","^6"),format("slotID","^6"),format("raw_size","^15"),format("firmware_state","^20")))
     for drive in physicaldrives:
         if "enclosure_id" in drive.keys():
             if "drive_position" in drive.keys():
-                m.text("%s%s%s%s%s%s"%(format(drive["adapter_id"],"^6"),format(re.split(',|:',drive["drive_position"])[1],"^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
+                m.text("%s%s%s%s%s%s%s"%(format(drive["device_id"],"^10"),format(drive["adapter_id"],"^6"),format(re.split(',|:',drive["drive_position"])[1],"^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
             else:
-                m.text("%s%s%s%s%s%s"%(format(drive["adapter_id"],"^6"),format("-","^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
+                m.text("%s%s%s%s%s%s%s"%(format(drive["device_id"],"^10"),format(drive["adapter_id"],"^6"),format("-","^6"),format(drive["enclosure_id"],"^6"),format(drive["slot_number"],"^6"),format(drive["raw_size"],"^15"),format(drive["firmware_state"],"^20")))
     m.run(43,3)
 
 def three1_3funtion(screen):
@@ -110,6 +110,31 @@ def three1_3funtion(screen):
     for vd in logicaldrives:
         if "id" in vd.keys():
             m.text("%s%s%s%s%s%s"%(format(vd["adapter_id"],"^6"),format(vd["id"],"^4"),format(vd["number_of_drives"],"^6"),format(vd["size"],"^12"),format(vd["state"],"^8"),format(vd["raid_level"],"^8")))
+    m.run(43,3)
+
+def rebuild_device_status(screen):
+    """
+    rebuild 进度信息
+    """
+    adapters = cli.adapters()
+    # 如果没有获取的 raid 卡，则直接返回提醒
+    if not len(adapters):
+        waring = Snack_output(screen, "waring", 35 )
+        waring.text("not found raid card")
+        waring.run(43,3)
+        return 0
+
+    rebuild_deviceinfo_list = cli.get_rebuild_list()
+    if not len(rebuild_deviceinfo_list):
+        waring = Snack_output(screen, "waring", 35 )
+        waring.text("not found rebuild device")
+        waring.run(43,3)
+        return 0
+
+    m = Snack_output(screen, "status_rebuild", 65 )
+    m.text("%s"%(format("rebuild info","^60")))
+    for rd in rebuild_deviceinfo_list:
+        m.text("%s"%(format(rd,"^60")))
     m.run(43,3)
 
 def example(screen):
